@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.peilion.model.mappers.MeasurePointMapper">
+    <resultMap id="resultMap" type="cn.peilion.model.pojos.measurePoint.MeasurePoint" autoMapping="true"/>
+    <resultMap id="joinMap" type="cn.peilion.model.pojos.measurePoint.MeasurePointRelated" extends="resultMap">
+        <result property="stationName" column="station_name"/>
+        <result property="assetName" column="asset_name"/>
+    </resultMap>
+    <resultMap id="statisticMap" type="cn.peilion.model.pojos.measurePoint.MeasurePointStat">
+        <result property="filed" column="filed"/>
+        <result property="cnt" column="cnt"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@sql select -->
+        measure_point.id, measure_point.name, measure_point.cr_time, measure_point.md_time, measure_point.type,
+        measure_point.sample_interval, measure_point.sample_freq, measure_point.asset_id, measure_point.station_id,
+        measure_point.inner_station_id, measure_point.statu,
+        measure_point.health_indicator, measure_point.last_diag_id, measure_point.direction, measure_point.position,
+        measure_point.sample_sensitive
+        <!--@sql from measure_point -->
+    </sql>
+
+    <sql id="Brief_Column_List">
+        <!--@sql select -->
+        measure_point.id, measure_point.name, measure_point.asset_id, measure_point.type, measure_point.station_id,
+        measure_point.inner_station_id, measure_point.health_indicator
+        <!--@sql from measure_point -->
+    </sql>
+
+    <select id="loadMeasurePointList" resultMap="joinMap">
+        select
+        <if test="dto.brief">
+            <include refid="Brief_Column_List"/>
+        </if>
+        <if test="null == dto.brief || !dto.brief">
+            <include refid="Base_Column_List"/>,
+                s.name as station_name,
+                a.name as asset_name
+        </if>
+        from measure_point
+                     join station s on measure_point.station_id = s.id
+                     join asset a on measure_point.asset_id = a.id
+
+
+        <where>
+            <choose>
+                <when test="dto.stationId != null">
+                    and measure_point.station_id = #{dto.stationId}
+                </when>
+                <when test="dto.assetId != null">
+                    and measure_point.asset_id = #{dto.assetId}
+                </when>
+            </choose>
+            <if test="dto.type != null">
+                and measure_point.type = #{dto.type}
+            </if>
+        </where>
+
+        order by measure_point.name
+        <if test="dto.limit != null">
+            limit #{dto.limit}
+        </if>
+    </select>
+
+    <select id="loadMeasurePoint" resultType="cn.peilion.model.pojos.measurePoint.MeasurePoint">
+        select
+        <include refid="Base_Column_List"/>
+        from measure_point
+        <where>
+            id = #{measurePointId}
+        </where>
+    </select>
+
+    <select id="loadMeasurePointStat" resultMap="statisticMap">
+        select #{rule} as filed, count(*) as cnt
+        from measure_point
+        group by #{rule}
+    </select>
+</mapper>

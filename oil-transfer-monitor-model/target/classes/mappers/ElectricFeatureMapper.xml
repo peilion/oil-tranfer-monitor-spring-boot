@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.peilion.model.mappers.ElectricFeatureMapper">
+    <resultMap id="resultMap" type="cn.peilion.model.pojos.electric.ElectricFeature">
+        <id column="id" property="id"/>
+        <result column="time" property="time"/>
+        <result column="urms" property="urms"/>
+        <result column="uthd" property="uthd"/>
+        <result column="uharmonics" property="uharmonics"
+                typeHandler="cn.peilion.model.typeHandler.BlobFloatArrayTypeHandler"/>
+        <result column="umaxCurrent" property="umaxCurrent"/>
+        <result column="uminCurrent" property="uminCurrent"/>
+        <result column="ufbrb" property="ufbrb" typeHandler="cn.peilion.model.typeHandler.BlobFloatArrayTypeHandler"/>
+        <result column="ufrequency" property="ufrequency"/>
+        <result column="uamplitude" property="uamplitude"/>
+        <result column="uinitialPhase" property="uinitialPhase"/>
+        <result column="vrms" property="vrms"/>
+        <result column="vthd" property="vthd"/>
+        <result column="vharmonics" property="vharmonics"
+                typeHandler="cn.peilion.model.typeHandler.BlobFloatArrayTypeHandler"/>
+        <result column="vmaxCurrent" property="vmaxCurrent"/>
+        <result column="vminCurrent" property="vminCurrent"/>
+        <result column="vfbrb" property="vfbrb" typeHandler="cn.peilion.model.typeHandler.BlobFloatArrayTypeHandler"/>
+        <result column="vfrequency" property="vfrequency"/>
+        <result column="vamplitude" property="vamplitude"/>
+        <result column="vinitialPhase" property="vinitialPhase"/>
+        <result column="wrms" property="wrms"/>
+        <result column="wthd" property="wthd"/>
+        <result column="wharmonics" property="wharmonics"
+                typeHandler="cn.peilion.model.typeHandler.BlobFloatArrayTypeHandler"/>
+        <result column="wmaxCurrent" property="wmaxCurrent"/>
+        <result column="wminCurrent" property="wminCurrent"/>
+        <result column="wfbrb" property="wfbrb" typeHandler="cn.peilion.model.typeHandler.BlobFloatArrayTypeHandler"/>
+        <result column="wfrequency" property="wfrequency"/>
+        <result column="wamplitude" property="wamplitude"/>
+        <result column="winitialPhase" property="winitialPhase"/>
+        <result column="health_indicator" property="healthIndicator"/>
+        <result column="data_id" property="dataId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@sql select -->
+        id, time, urms, uthd, uharmonics, umax_current, umin_current, ufbrb, ufrequency, uamplitude, uinitial_phase,
+        vrms, vthd, vharmonics, vmax_current, vmin_current, vfbrb, vfrequency, vamplitude, vinitial_phase, wrms, wthd,
+        wharmonics, wmax_current, wmin_current, wfbrb, wfrequency, wamplitude, winitial_phase, n_rms, p_rms, z_rms,
+        imbalance, health_indicator, data_id
+        <!--@sql from elec_feature_7_32 -->
+    </sql>
+    <select id="loadFeature" resultMap="resultMap">
+        select id,time,
+        <foreach collection="dto.fileds" item="filed" separator=",">
+            ${filed}
+        </foreach>
+        from elec_feature_${stationId}_${innerStationId}
+        <if test="dto.isLast != null and dto.isLast">
+            order by id desc
+            limit 1
+        </if>
+        <if test="dto.isLast == null or !dto.isLast">
+            where data_id=
+            #{dto.id}
+        </if>
+    </select>
+
+    <select id="loadElectricFeatureList" resultMap="resultMap">
+        select id,time,
+        <foreach collection="dto.fileds" item="filed" separator=",">
+            ${filed}
+        </foreach>
+        from elec_feature_${stationId}_${innerStationId} f
+        <if test="dto.after != null and dto.before != null">
+            <where>
+                f.time <![CDATA[<]]> #{dto.before} and f.time <![CDATA[>]]> #{dto.after}
+            </where>
+        </if>
+        order by f.time asc
+        <if test="dto.limit != null">
+            limit #{dto.limit}
+        </if>
+    </select>
+</mapper>

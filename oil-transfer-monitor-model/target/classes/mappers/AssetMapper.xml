@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.peilion.model.mappers.AssetMapper">
+    <resultMap id="cardMap" type="cn.peilion.model.pojos.asset.AssetCard">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="sn" property="sn"/>
+        <result column="st_time" property="stTime"/>
+        <result column="health_indicator" property="healthIndicator"/>
+        <result column="statu" property="statu"/>
+        <result column="repairs" property="repairs"/>
+        <result column="mp_configuration" property="mpConfiguration"/>
+        <result column="station_name" property="stationName"/>
+        <result column="is_domesitc" property="isDomesitc"/>
+        <result column="oil_type" property="oilType"/>
+        <result column="design_output" property="designOutput"/>
+    </resultMap>
+
+    <select id="loadAssetCards" resultMap="cardMap">
+        select asset.id                as id,
+               asset.name              as name,
+               asset.sn                as sn,
+               asset.st_time           as st_time,
+               asset.health_indicator  as health_indicator,
+               asset.statu             as statu,
+               asset.repairs           as repairs,
+               asset.mp_configuration  as mp_configuration,
+               station.name            as station_name,
+               pump_unit.is_domestic   as is_domesitc,
+               pump_unit.oil_type      as oil_type,
+               pump_unit.design_output as design_output
+        from asset
+                     left outer join station on asset.station_id = station.id
+                     left outer join pump_unit on asset.id = pump_unit.asset_id
+                where asset.asset_type = 0
+        <if test="id != null">
+            and asset.id = #{id}
+        </if>
+        order by asset.id
+    </select>
+
+    <select id="loadAssetDetail" resultType="cn.peilion.model.pojos.asset.AssetDetail">
+        select asset.id,
+               asset.name,
+               asset.sn,
+               asset.lr_time,
+               asset.cr_time,
+               asset.md_time,
+               asset.st_time,
+               asset.memo,
+               asset.health_indicator,
+               asset.statu,
+               asset.asset_type,
+               asset.repairs,
+
+               s.name  as station_name,
+               p.name  as pipeline_name,
+               bc.name as branch_name,
+               rc.name as region_name,
+               pu.is_domestic,
+               pu.oil_type,
+               pu.design_output
+        from asset
+                     join station s on asset.station_id = s.id
+                     join pump_unit pu on asset.id = pu.asset_id
+                     join pipeline p on pu.pipeline_id = p.id
+                     join branch_company bc on s.bc_id = bc.id
+                     join region_company rc on s.rc_id = rc.id
+        where asset.id = #{id}
+    </select>
+
+    <select id="loadAssetStatByStatu" resultType="cn.peilion.model.pojos.asset.AssetStat">
+        SELECT statu as filed, COUNT(*) as cnt
+        FROM `asset`
+        where asset_level = 0
+        GROUP BY statu
+    </select>
+
+
+    <select id="loadAssetStatByType" resultType="cn.peilion.model.pojos.asset.AssetStat">
+        SELECT asset_type as filed, COUNT(*) as cnt
+        FROM asset
+        GROUP BY asset_type
+    </select>
+
+    <select id="loadAssetStatByAverageHealthIndicator" resultType="cn.peilion.model.pojos.asset.AssetStat">
+        SELECT 'field' as field, avg(health_indicator) as cnt
+        from asset
+        WHERE asset_level = 0
+    </select>
+
+    <select id="loadGeoAssetStat" resultType="cn.peilion.model.pojos.asset.AssetGeoStat">
+        SELECT station.NAME      as station_name,
+               statu             as statu,
+               COUNT(*)          as count,
+               station.longitude as longitude,
+               station.latitude  as latitude
+        FROM asset
+                     JOIN station ON asset.station_id = station.id
+        WHERE asset.asset_level = 0
+        GROUP BY asset.statu, station_id
+        ORDER BY asset.statu
+    </select>
+
+    <select id="loadTreeItems" resultType="cn.peilion.model.pojos.TreeItem">
+        SELECT id, name, station_id as parent_id, 3 as level
+        FROM asset
+        WHERE asset_level = 0
+    </select>
+</mapper>

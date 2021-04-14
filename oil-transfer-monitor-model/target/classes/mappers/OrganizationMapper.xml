@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.peilion.model.mappers.OrganizationMapper">
+    <resultMap id="weatherMap" type="cn.peilion.model.pojos.Station">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="weather" column="weather"/>
+    </resultMap>
+
+    <select id="loadStationTreeItems" resultType="cn.peilion.model.pojos.TreeItem">
+        SELECT id, name, bc_id as parent_id, 2 as level
+        FROM station
+    </select>
+
+    <select id="loadBranchCompanyTreeItems" resultType="cn.peilion.model.pojos.TreeItem">
+        SELECT id, name, rc_id as parent_id, 1 as level
+        FROM branch_company
+    </select>
+
+    <select id="loadRegionCompanyTreeItems" resultType="cn.peilion.model.pojos.TreeItem">
+        SELECT id, name, 0 as parent_id, 0 as level
+        FROM region_company
+    </select>
+
+    <select id="loadStationWeather" resultMap="weatherMap">
+        SELECT id, name, weather
+        FROM station
+        ORDER BY id;
+    </select>
+</mapper>

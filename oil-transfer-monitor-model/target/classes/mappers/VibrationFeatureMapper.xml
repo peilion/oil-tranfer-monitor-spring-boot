@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.peilion.model.mappers.VibrationFeatureMapper">
+    <resultMap id="resultMap" type="cn.peilion.model.pojos.vibration.VibrationFeature">
+        <id column="id" property="id"/>
+        <result column="time" property="time"/>
+        <result column="rms" property="rms"/>
+        <result column="max" property="max"/>
+        <result column="avg" property="avg"/>
+        <result column="p2p" property="p2P"/>
+        <result column="var" property="var"/>
+        <result column="kurtosis" property="kurtosis"/>
+        <result column="fr" property="fr"/>
+        <result column="fr_amp" property="frAmp"/>
+        <result column="thd" property="thd"/>
+        <result column="bpfi" property="bpfi"/>
+        <result column="bpfo" property="bpfo"/>
+        <result column="bsf" property="bsf"/>
+        <result column="ftf" property="ftf"/>
+        <result column="sideband" property="sideband"/>
+        <result column="health_indicator" property="healthIndicator"/>
+        <result column="data_id" property="dataId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@sql select -->
+        id, time, rms, max, p2p, avg, var, kurtosis, fr, fr_amp, thd, bpfi, bpfo, bsf, ftf, sideband, health_indicator,
+        data_id
+        <!--@sql from vib_feature_1_0 -->
+    </sql>
+
+    <select id="loadVibrationFeature" resultType="cn.peilion.model.pojos.vibration.VibrationFeature">
+        select id,time,
+        <foreach collection="dto.fileds" item="filed" separator=",">
+            ${filed}
+        </foreach>
+        from vib_feature_${stationId}_${innerStationId}
+        <if test="dto.isLast != null and dto.isLast">
+            order by id desc
+            limit 1
+        </if>
+        <if test="dto.isLast == null or !dto.isLast">
+            where data_id=
+            #{dto.id}
+        </if>
+
+    </select>
+
+    <select id="loadVibrationFeatureList" resultMap="resultMap">
+        select id,time,
+        <foreach collection="dto.fileds" item="filed" separator=",">
+            ${filed}
+        </foreach>
+        from vib_feature_${stationId}_${innerStationId} f
+        <if test="dto.after != null and dto.before != null">
+            <where>
+                f.time <![CDATA[<]]> #{dto.before} and f.time <![CDATA[>]]> #{dto.after}
+            </where>
+        </if>
+        order by f.time asc
+        <if test="dto.limit != null">
+            limit #{dto.limit}
+        </if>
+
+    </select>
+</mapper>

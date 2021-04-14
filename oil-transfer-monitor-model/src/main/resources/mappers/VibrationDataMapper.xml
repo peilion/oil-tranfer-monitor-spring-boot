@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.peilion.model.mappers.VibrationDataMapper">
+    <resultMap id="resultMap" type="cn.peilion.model.pojos.vibration.VibrationData">
+        <id column="id" property="id"/>
+        <result column="time" property="time"/>
+        <result column="rms" property="rms"/>
+        <result column="ima" property="ima" typeHandler="cn.peilion.model.typeHandler.BlobFloatArrayTypeHandler"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        <!--@sql select -->
+        id, time, rms, ima
+        <!--@sql from vib_data_1_0  aa -->
+    </sql>
+    <select id="loadVibrationData" resultMap="resultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from vib_data_${stationId}_${innerStationId}
+        <if test="dto.isLast != null and dto.isLast">
+            order by id desc
+            limit 1
+        </if>
+        <if test="dto.isLast == null or !dto.isLast">
+            where id=#{dto.id}
+        </if>
+    </select>
+</mapper>
