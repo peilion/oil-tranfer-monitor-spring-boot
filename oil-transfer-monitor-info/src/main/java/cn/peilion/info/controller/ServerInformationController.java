@@ -1,7 +1,7 @@
 package cn.peilion.info.controller;
 
-import cn.peilion.info.apis.PipelineControllerApi;
-import cn.peilion.info.service.PipelineService;
+import cn.peilion.info.apis.ServerInformationControllerApi;
+import cn.peilion.info.service.ServerService;
 import cn.peilion.model.common.dtos.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,18 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "Pipeline")
+
 @RestController
-@RequestMapping("/api/v1/pipeline")
-public class PipelineControllerApiImpl implements PipelineControllerApi {
+@Api(tags = "Server")
+@RequestMapping("/api/v1/server")
+public class ServerInformationController implements ServerInformationControllerApi {
 
     @Autowired
-    private PipelineService pipelineService;
+    private ServerService serverService;
 
     @Override
-    @GetMapping("/total")
-    @ApiOperation("获取管道总长度")
-    public ResponseResult getTotalLength() {
-        return pipelineService.getTotal();
+    @GetMapping("/")
+    @ApiOperation("获取服务器相关运行数据")
+    public ResponseResult get() {
+        return serverService.load();
     }
 }

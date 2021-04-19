@@ -3,6 +3,7 @@ package cn.peilion.data.component;
 import cn.peilion.model.common.dtos.MeasurePointListDto;
 import cn.peilion.model.mappers.MeasurePointMapper;
 import cn.peilion.model.pojos.measurePoint.MeasurePoint;
+import cn.peilion.model.pojos.measurePoint.MeasurePointRelated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,7 @@ public class MeasurePointMapHolder {
 
     @PostConstruct
     public void initMeasurePointMap() {
-        List<MeasurePoint> measurePoints = measurePointMapper.loadMeasurePointList(new MeasurePointListDto());
+        List<MeasurePointRelated> measurePoints = measurePointMapper.loadMeasurePointList(new MeasurePointListDto());
         measurePoints.forEach(measurePoint -> {
             measurePointMap.put(measurePoint.getId(), measurePoint);
             assetMeasurePointMap.putIfAbsent(measurePoint.getAssetId(), new ArrayList());

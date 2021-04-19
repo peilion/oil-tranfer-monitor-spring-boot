@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @author fpl11
  */
-@Api(tags = "measure point")
+@Api(tags = "Measure point")
 @RestController
 @RequestMapping("/api/v1/mp")
 public class MeasurePointController implements MeasurePointControllerApi {

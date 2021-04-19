@@ -102,7 +102,7 @@
         ORDER BY asset.statu
     </select>
 
-    <select id="loadTreeItems" resultType="cn.peilion.model.pojos.TreeItem">
+    <select id="loadTreeItems" resultType="cn.peilion.model.pojos.organization.TreeItem">
         SELECT id, name, station_id as parent_id, 3 as level
         FROM asset
         WHERE asset_level = 0

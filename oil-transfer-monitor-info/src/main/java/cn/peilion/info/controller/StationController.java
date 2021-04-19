@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Api(tags = "station")
+@Api(tags = "Station")
 @RequestMapping("/api/v1/station")
 public class StationController implements StationControllerApi {
 
