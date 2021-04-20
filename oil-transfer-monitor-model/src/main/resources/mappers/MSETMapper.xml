@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.peilion.model.mappers.MSETMapper">
+    <resultMap id="resultMap" type="cn.peilion.model.pojos.asset.AssetHi">
+        <id column="id" property="id"/>
+        <result column="data_id" property="dataId"/>
+        <result column="similarity" property="similarity"/>
+        <result column="est" property="est"/>
+        <result column="time" property="time"/>
+        <result column="threshold" property="threshold"/>
+        <result column="health_indicator" property="healthIndicator"/>
+    </resultMap>
+
+    <sql id="Similarity_List">
+        <!--@sql select -->
+        id, time, similarity, threshold
+        <!--@sql from asset_hi_1  aa -->
+    </sql>
+
+    <select id="loadSimilarityAndThreshold" resultType="cn.peilion.model.pojos.asset.AssetHi">
+        select
+        <include refid="Similarity_List"/>
+        from asset_hi_${asset_id}
+
+        <choose>
+            <when test="dto.after != null and dto.after != '' and dto.before != null and dto.before != ''">
+                where time between #{dto.after} and #{dto.before}
+            </when>
+            <when test="dto.nearBy">
+                where id <![CDATA[<=]]> #{dto.nearBy}
+                        order by id desc
+                        limit 10
+            </when>
+            <when test="dto.limit != null">
+                #{dto.limit}
+            </when>
+        </choose>
+    </select>
+
+    <select id="loadThresholdList" resultMap="resultMap">
+        select id, time, est
+        from asset_hi_${asset_id}
+        where time between #{dto.after} and #{dto.before}
+    </select>
+</mapper>
