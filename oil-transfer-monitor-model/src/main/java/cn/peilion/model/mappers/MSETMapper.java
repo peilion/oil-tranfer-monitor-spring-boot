@@ -10,4 +10,6 @@ public interface MSETMapper {
     List<AssetHi> loadSimilarityAndThreshold(@Param("asset_id") Integer id, @Param("dto") MSETDto dto);
 
     List<AssetHi> loadThresholdList(@Param("asset_id") Integer id, @Param("dto") MSETDto dto);
+
+    AssetHi loadThreshold(@Param("asset_id") Integer id, @Param("data_id") Integer dataId);
 }

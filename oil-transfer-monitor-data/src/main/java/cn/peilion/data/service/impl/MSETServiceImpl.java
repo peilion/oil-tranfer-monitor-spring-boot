@@ -21,6 +21,8 @@ public class MSETServiceImpl implements MSETService {
 
     @Autowired
     private MSETMapper msetMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public ResponseResult loadSimilarityAndThresholdList(MSETDto dto, Integer id) {
@@ -32,7 +34,6 @@ public class MSETServiceImpl implements MSETService {
     public ResponseResult loadEstimation(MSETDto dto, Integer id) throws JsonProcessingException {
         List<AssetHi> assetHiList = msetMapper.loadThresholdList(id, dto);
         HashMap<String, Object> res = new HashMap<>();
-        ObjectMapper objectMapper = new ObjectMapper();
         for (AssetHi assetHi : assetHiList) {
             res.putIfAbsent("id", new ArrayList<Integer>());
             res.putIfAbsent("time", new ArrayList<Date>());
@@ -57,7 +58,9 @@ public class MSETServiceImpl implements MSETService {
     }
 
     @Override
-    public ResponseResult loadEstimation(Integer id, Integer dataId) {
-        return null;
+    public ResponseResult loadEstimation(Integer id, Integer dataId) throws JsonProcessingException {
+        AssetHi assetHi = msetMapper.loadThreshold(id, dataId);
+        MSETEstimation msetEstimation = objectMapper.readValue(assetHi.getEst(), MSETEstimation.class);
+        return ResponseResult.okResult(msetEstimation);
     }
 }

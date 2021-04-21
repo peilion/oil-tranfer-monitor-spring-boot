@@ -38,7 +38,7 @@ public class MSETController implements MSETControllerApi {
     @ApiOperation("根据数据id获取估计值")
     @Override
     @GetMapping("/{id}/est/{dataId}")
-    public ResponseResult getEstimationById(@PathVariable("dataId") Integer dataId, @PathVariable("id") Integer id) {
+    public ResponseResult getEstimationById(@PathVariable("dataId") Integer dataId, @PathVariable("id") Integer id) throws JsonProcessingException {
         return msetService.loadEstimation(id, dataId);
     }
 }

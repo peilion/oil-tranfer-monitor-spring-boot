@@ -17,7 +17,7 @@
         <!--@sql from asset_hi_1  aa -->
     </sql>
 
-    <select id="loadSimilarityAndThreshold" resultType="cn.peilion.model.pojos.asset.AssetHi">
+    <select id="loadSimilarityAndThreshold" resultMap="resultMap">
         select
         <include refid="Similarity_List"/>
         from asset_hi_${asset_id}
@@ -41,5 +41,11 @@
         select id, time, est
         from asset_hi_${asset_id}
         where time between #{dto.after} and #{dto.before}
+    </select>
+
+    <select id="loadThreshold" resultMap="resultMap">
+        select id,est
+        from asset_hi_${asset_id}
+        where id = #{data_id}
     </select>
 </mapper>

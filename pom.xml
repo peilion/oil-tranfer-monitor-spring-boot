@@ -12,6 +12,7 @@
         <module>oil-transfer-monitor-common</module>
         <module>oil-transfer-monitor-data</module>
         <module>oil-transfer-monitor-info</module>
+        <module>oil-transfer-monitor-log</module>
     </modules>
 
     <!-- 继承Spring boot工程 -->

@@ -9,6 +9,6 @@ public interface MSETControllerApi {
 
     ResponseResult getEstimationList(MSETDto dto, Integer id) throws JsonProcessingException;
 
-    ResponseResult getEstimationById(Integer dataId, Integer id);
+    ResponseResult getEstimationById(Integer dataId, Integer id) throws JsonProcessingException;
 
 }

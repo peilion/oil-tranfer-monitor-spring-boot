@@ -9,5 +9,5 @@ public interface MSETService {
 
     ResponseResult loadEstimation(MSETDto dto, Integer id) throws JsonProcessingException;
 
-    ResponseResult loadEstimation(Integer id, Integer dataId);
+    ResponseResult loadEstimation(Integer id, Integer dataId) throws JsonProcessingException;
 }
