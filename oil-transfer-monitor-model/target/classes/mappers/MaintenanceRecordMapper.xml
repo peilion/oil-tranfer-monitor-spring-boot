@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.peilion.model.mappers.MaintenanceRecordMapper">
+    <select id="loadStatByStatu" resultType="cn.peilion.model.pojos.log.MaintenanceRecordStat">
+        SELECT statu, count(*) as count
+        FROM maintenance_record
+        GROUP BY statu
+    </select>
+</mapper>

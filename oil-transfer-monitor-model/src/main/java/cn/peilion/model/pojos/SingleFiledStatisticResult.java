@@ -1,4 +1,4 @@
-package cn.peilion.model.pojos.asset;
+package cn.peilion.model.pojos;
 
 
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.Data;
  * @author fpl11
  */
 @Data
-public class AssetStat {
+public class SingleFiledStatisticResult {
 
   private Integer filed;
   private Integer cnt;

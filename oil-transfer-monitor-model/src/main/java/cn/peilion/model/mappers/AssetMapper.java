@@ -4,7 +4,7 @@ import cn.peilion.model.pojos.organization.TreeItem;
 import cn.peilion.model.pojos.asset.AssetCard;
 import cn.peilion.model.pojos.asset.AssetDetail;
 import cn.peilion.model.pojos.asset.AssetGeoStat;
-import cn.peilion.model.pojos.asset.AssetStat;
+import cn.peilion.model.pojos.SingleFiledStatisticResult;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -14,11 +14,11 @@ public interface AssetMapper {
 
     AssetDetail loadAssetDetail(@Param("id") Integer id);
 
-    List<AssetStat> loadAssetStatByStatu();
+    List<SingleFiledStatisticResult> loadAssetStatByStatu();
 
-    List<AssetStat> loadAssetStatByType();
+    List<SingleFiledStatisticResult> loadAssetStatByType();
 
-    List<AssetStat> loadAssetStatByAverageHealthIndicator();
+    List<SingleFiledStatisticResult> loadAssetStatByAverageHealthIndicator();
 
     List<AssetGeoStat> loadGeoAssetStat();
 

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.peilion.model.mappers.WarningLogMapper">
+    <resultMap id="BaseResultMap" type="cn.peilion.model.pojos.log.WarningLog">
+        <id column="id" property="id"/>
+        <result column="cr_time" property="crTime"/>
+        <result column="description" property="description"
+                typeHandler="cn.peilion.model.typeHandler.JSONHashMapTypeHandler"/>
+        <result column="severity" property="severity"/>
+        <result column="is_read" property="isRead"/>
+        <result column="asset_id" property="assetId"/>
+        <result column="mp_id" property="mpId"/>
+        <result column="data_id" property="dataId"/>
+        <result column="ib_indicator" property="ibIndicator"/>
+        <result column="ma_indicator" property="maIndicator"/>
+        <result column="bw_indicator" property="bwIndicator"
+                typeHandler="cn.peilion.model.typeHandler.BlobFloatArrayTypeHandler"/>
+        <result column="al_indicator" property="alIndicator"/>
+        <result column="bl_indicator" property="blIndicator"/>
+        <result column="rb_indicator" property="rbIndicator"/>
+        <result column="sg_indicator" property="sgIndicator"/>
+        <result column="env_kurtosis" property="envKurtosis"/>
+        <result column="vel_thd" property="velThd"/>
+        <result column="threshold_id" property="thresholdId"/>
+        <result column="marks" property="marks" typeHandler="cn.peilion.model.typeHandler.JSONHashMapTypeHandler"/>
+        <result column="thres" property="thres" typeHandler="cn.peilion.model.typeHandler.JSONHashMapTypeHandler"/>
+    </resultMap>
+
+    <resultMap id="TableItemMap" type="cn.peilion.model.pojos.log.WarningLogTableItem">
+        <id column="id" property="id"/>
+        <result column="cr_time" property="crTime"/>
+        <result column="description" property="description"/>
+        <result column="severity" property="severity"/>
+        <result column="is_read" property="isRead"/>
+        <result column="mp_name" property="mpName"/>
+        <result column="data_id" property="dataId"/>
+        <result column="warning_type" property="warningType"/>
+        <result column="asset_name" property="assetName"/>
+        <result column="mp_configuration" property="mpConfiguration"/>
+        <result column="asset_id" property="assetId"/>
+        <result column="mp_id" property="mpId"/>
+    </resultMap>
+
+    <select id="loadStatisticByPeriod" resultType="java.lang.Integer">
+        SELECT sum(cnt) AS cnt
+        FROM (
+                     SELECT count(*) AS cnt
+                     FROM warning_log
+                     WHERE cr_time BETWEEN #{after} and #{before}
+                     UNION
+                     SELECT count(*) AS cnt
+                     FROM mset_warning_log
+                     WHERE cr_time BETWEEN #{after} and #{before}
+                     ) AS logs
+    </select>
+
+    <select id="loadStatisticByReadBehavior" resultType="cn.peilion.model.pojos.SingleFiledStatisticResult">
+        SELECT is_read as filed, count(*) as cnt
+        FROM warning_log
+        GROUP BY is_read
+    </select>
+
+    <select id="loadById" resultMap="BaseResultMap">
+        SELECT warning_log.id AS id,
+               cr_time        AS cr_time,
+               description    AS description,
+               severity       AS severity,
+               is_read        AS is_read,
+               asset_id       AS asset_id,
+               mp_id          AS mp_id,
+               data_id        AS data_id,
+               ib_indicator   AS ib_indicator,
+               ma_indicator   AS ma_indicator,
+               bw_indicator   AS bw_indicator,
+               al_indicator   AS al_indicator,
+               bl_indicator   AS bl_indicator,
+               rb_indicator   AS rb_indicator,
+               sg_indicator   AS sg_indicator,
+               env_kurtosis   AS env_kurtosis,
+               vel_thd        AS vel_thd,
+               threshold_id   AS threshold_id,
+               marks          AS marks,
+               diag_threshold AS thres
+        FROM warning_log
+                     LEFT JOIN threshold t ON warning_log.threshold_id = t.id
+        WHERE warning_log.id = #{id}
+    </select>
+
+    <select id="loadSuggestions" resultType="cn.peilion.model.pojos.configuration.MaintenanceSuggestion">
+        SELECT suggestion
+        FROM maintenance_suggestion WHERE
+        <foreach collection="patterns" index="index" item="item" separator="OR">
+            (fault_pattern = #{index} AND severity = #{item})
+        </foreach>
+    </select>
+
+    <select id="loadList" resultMap="TableItemMap">
+        SELECT warning_log.id,
+               warning_log.cr_time,
+               warning_log.description,
+               warning_log.severity   as severity,
+               warning_log.is_read    as is_read,
+               measure_point.name     as mp_name,
+               warning_log.data_id    as data_id,
+               'diagnosis_warning'    AS warning_type,
+               asset.name             AS asset_name,
+               asset.mp_configuration AS mp_configuration,
+               asset.id               AS asset_id,
+               warning_log.mp_id      AS mp_id
+        FROM `warning_log`
+                     JOIN asset ON asset.id = warning_log.asset_id
+                     JOIN measure_point ON measure_point.id = warning_log.mp_id
+        UNION
+        SELECT mset_warning_log.id,
+               mset_warning_log.cr_time,
+               mset_warning_log.description,
+               1                            as severity,
+               true                         as is_read,
+               null                         as mp_name,
+               mset_warning_log.reporter_id as data_id,
+               'mset_warning'               AS warning_type,
+               asset.NAME                   AS asset_name,
+               asset.mp_configuration       AS mp_configuration,
+               asset.id                     AS asset_id,
+               0                            AS mp_id
+
+        FROM `mset_warning_log`
+                     JOIN asset ON asset.id = mset_warning_log.asset_id
+        ORDER BY cr_time DESC
+        LIMIT #{size}
+    </select>
+
+    <select id="loadBriefList" resultMap="TableItemMap">
+        SELECT warning_log.cr_time,
+               warning_log.description,
+               warning_log.severity as severity,
+               'diagnosis_warning'  AS warning_type,
+               asset.name           AS asset_name
+        FROM `warning_log`
+                     JOIN asset ON asset.id = warning_log.asset_id
+        UNION
+        SELECT mset_warning_log.cr_time,
+               mset_warning_log.description,
+               1              as severity,
+               'mset_warning' AS warning_type,
+               asset.NAME     AS asset_name
+        FROM `mset_warning_log`
+                     JOIN asset ON asset.id = mset_warning_log.asset_id
+        ORDER BY cr_time DESC
+        LIMIT 10
+    </select>
+
+    <select id="loadRecentAssetEvent" resultType="cn.peilion.model.pojos.log.AssetEvent">
+        SELECT cr_time,
+               description,
+               'mainte' as event_type
+        FROM `maintenance_record`
+        WHERE asset_id = #{assetId}
+        UNION
+        SELECT cr_time,
+               description,
+               'diagnosis_warning' as t_name
+        FROM `warning_log`
+        WHERE asset_id = #{assetId}
+        UNION
+        SELECT cr_time,
+               description,
+               'mset_warning' as t_name
+        FROM `mset_warning_log`
+        WHERE asset_id = #{assetId}
+
+        ORDER BY cr_time
+                desc
+        limit 10
+    </select>
+</mapper>

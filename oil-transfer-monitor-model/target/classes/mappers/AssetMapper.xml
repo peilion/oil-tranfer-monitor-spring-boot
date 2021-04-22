@@ -69,7 +69,7 @@
         where asset.id = #{id}
     </select>
 
-    <select id="loadAssetStatByStatu" resultType="cn.peilion.model.pojos.asset.AssetStat">
+    <select id="loadAssetStatByStatu" resultType="cn.peilion.model.pojos.SingleFiledStatisticResult">
         SELECT statu as filed, COUNT(*) as cnt
         FROM `asset`
         where asset_level = 0
@@ -77,13 +77,13 @@
     </select>
 
 
-    <select id="loadAssetStatByType" resultType="cn.peilion.model.pojos.asset.AssetStat">
+    <select id="loadAssetStatByType" resultType="cn.peilion.model.pojos.SingleFiledStatisticResult">
         SELECT asset_type as filed, COUNT(*) as cnt
         FROM asset
         GROUP BY asset_type
     </select>
 
-    <select id="loadAssetStatByAverageHealthIndicator" resultType="cn.peilion.model.pojos.asset.AssetStat">
+    <select id="loadAssetStatByAverageHealthIndicator" resultType="cn.peilion.model.pojos.SingleFiledStatisticResult">
         SELECT 'field' as field, avg(health_indicator) as cnt
         from asset
         WHERE asset_level = 0
