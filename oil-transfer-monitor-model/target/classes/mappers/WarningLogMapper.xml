@@ -44,14 +44,14 @@
     <select id="loadStatisticByPeriod" resultType="java.lang.Integer">
         SELECT sum(cnt) AS cnt
         FROM (
-                     SELECT count(*) AS cnt
-                     FROM warning_log
-                     WHERE cr_time BETWEEN #{after} and #{before}
-                     UNION
-                     SELECT count(*) AS cnt
-                     FROM mset_warning_log
-                     WHERE cr_time BETWEEN #{after} and #{before}
-                     ) AS logs
+        SELECT count(*) AS cnt
+        FROM warning_log
+        WHERE cr_time BETWEEN #{after} and #{before}
+        UNION
+        SELECT count(*) AS cnt
+        FROM mset_warning_log
+        WHERE cr_time BETWEEN #{after} and #{before}
+        ) AS logs
     </select>
 
     <select id="loadStatisticByReadBehavior" resultType="cn.peilion.model.pojos.SingleFiledStatisticResult">
@@ -62,27 +62,27 @@
 
     <select id="loadById" resultMap="BaseResultMap">
         SELECT warning_log.id AS id,
-               cr_time        AS cr_time,
-               description    AS description,
-               severity       AS severity,
-               is_read        AS is_read,
-               asset_id       AS asset_id,
-               mp_id          AS mp_id,
-               data_id        AS data_id,
-               ib_indicator   AS ib_indicator,
-               ma_indicator   AS ma_indicator,
-               bw_indicator   AS bw_indicator,
-               al_indicator   AS al_indicator,
-               bl_indicator   AS bl_indicator,
-               rb_indicator   AS rb_indicator,
-               sg_indicator   AS sg_indicator,
-               env_kurtosis   AS env_kurtosis,
-               vel_thd        AS vel_thd,
-               threshold_id   AS threshold_id,
-               marks          AS marks,
-               diag_threshold AS thres
+        cr_time AS cr_time,
+        description AS description,
+        severity AS severity,
+        is_read AS is_read,
+        asset_id AS asset_id,
+        mp_id AS mp_id,
+        data_id AS data_id,
+        ib_indicator AS ib_indicator,
+        ma_indicator AS ma_indicator,
+        bw_indicator AS bw_indicator,
+        al_indicator AS al_indicator,
+        bl_indicator AS bl_indicator,
+        rb_indicator AS rb_indicator,
+        sg_indicator AS sg_indicator,
+        env_kurtosis AS env_kurtosis,
+        vel_thd AS vel_thd,
+        threshold_id AS threshold_id,
+        marks AS marks,
+        diag_threshold AS thres
         FROM warning_log
-                     LEFT JOIN threshold t ON warning_log.threshold_id = t.id
+        LEFT JOIN threshold t ON warning_log.threshold_id = t.id
         WHERE warning_log.id = #{id}
     </select>
 
@@ -96,81 +96,81 @@
 
     <select id="loadList" resultMap="TableItemMap">
         SELECT warning_log.id,
-               warning_log.cr_time,
-               warning_log.description,
-               warning_log.severity   as severity,
-               warning_log.is_read    as is_read,
-               measure_point.name     as mp_name,
-               warning_log.data_id    as data_id,
-               'diagnosis_warning'    AS warning_type,
-               asset.name             AS asset_name,
-               asset.mp_configuration AS mp_configuration,
-               asset.id               AS asset_id,
-               warning_log.mp_id      AS mp_id
+        warning_log.cr_time,
+        warning_log.description,
+        warning_log.severity as severity,
+        warning_log.is_read as is_read,
+        measure_point.name as mp_name,
+        warning_log.data_id as data_id,
+        'diagnosis_warning' AS warning_type,
+        asset.name AS asset_name,
+        asset.mp_configuration AS mp_configuration,
+        asset.id AS asset_id,
+        warning_log.mp_id AS mp_id
         FROM `warning_log`
-                     JOIN asset ON asset.id = warning_log.asset_id
-                     JOIN measure_point ON measure_point.id = warning_log.mp_id
+        JOIN asset ON asset.id = warning_log.asset_id
+        JOIN measure_point ON measure_point.id = warning_log.mp_id
         UNION
         SELECT mset_warning_log.id,
-               mset_warning_log.cr_time,
-               mset_warning_log.description,
-               1                            as severity,
-               true                         as is_read,
-               null                         as mp_name,
-               mset_warning_log.reporter_id as data_id,
-               'mset_warning'               AS warning_type,
-               asset.NAME                   AS asset_name,
-               asset.mp_configuration       AS mp_configuration,
-               asset.id                     AS asset_id,
-               0                            AS mp_id
+        mset_warning_log.cr_time,
+        mset_warning_log.description,
+        1 as severity,
+        true as is_read,
+        null as mp_name,
+        mset_warning_log.reporter_id as data_id,
+        'mset_warning' AS warning_type,
+        asset.NAME AS asset_name,
+        asset.mp_configuration AS mp_configuration,
+        asset.id AS asset_id,
+        0 AS mp_id
 
         FROM `mset_warning_log`
-                     JOIN asset ON asset.id = mset_warning_log.asset_id
+        JOIN asset ON asset.id = mset_warning_log.asset_id
         ORDER BY cr_time DESC
         LIMIT #{size}
     </select>
 
     <select id="loadBriefList" resultMap="TableItemMap">
         SELECT warning_log.cr_time,
-               warning_log.description,
-               warning_log.severity as severity,
-               'diagnosis_warning'  AS warning_type,
-               asset.name           AS asset_name
+        warning_log.description,
+        warning_log.severity as severity,
+        'diagnosis_warning' AS warning_type,
+        asset.name AS asset_name
         FROM `warning_log`
-                     JOIN asset ON asset.id = warning_log.asset_id
+        JOIN asset ON asset.id = warning_log.asset_id
         UNION
         SELECT mset_warning_log.cr_time,
-               mset_warning_log.description,
-               1              as severity,
-               'mset_warning' AS warning_type,
-               asset.NAME     AS asset_name
+        mset_warning_log.description,
+        1 as severity,
+        'mset_warning' AS warning_type,
+        asset.NAME AS asset_name
         FROM `mset_warning_log`
-                     JOIN asset ON asset.id = mset_warning_log.asset_id
+        JOIN asset ON asset.id = mset_warning_log.asset_id
         ORDER BY cr_time DESC
         LIMIT 10
     </select>
 
     <select id="loadRecentAssetEvent" resultType="cn.peilion.model.pojos.log.AssetEvent">
         SELECT cr_time,
-               description,
-               'mainte' as event_type
+        description,
+        'mainte' as event_type
         FROM `maintenance_record`
         WHERE asset_id = #{assetId}
         UNION
         SELECT cr_time,
-               description,
-               'diagnosis_warning' as t_name
+        description,
+        'diagnosis_warning' as t_name
         FROM `warning_log`
         WHERE asset_id = #{assetId}
         UNION
         SELECT cr_time,
-               description,
-               'mset_warning' as t_name
+        description,
+        'mset_warning' as t_name
         FROM `mset_warning_log`
         WHERE asset_id = #{assetId}
 
         ORDER BY cr_time
-                desc
+        desc
         limit 10
     </select>
 </mapper>

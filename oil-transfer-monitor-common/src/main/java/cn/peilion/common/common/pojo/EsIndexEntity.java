@@ -11,7 +11,7 @@ public class EsIndexEntity {
     private Long id;
     private String content;
     private Long channelId;
-//    private Date pub_time;
+    //    private Date pub_time;
     private Date publishTime;
     private Long status;
     private String title;

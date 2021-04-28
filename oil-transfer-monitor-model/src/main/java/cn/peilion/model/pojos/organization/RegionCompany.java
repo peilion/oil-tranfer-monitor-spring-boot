@@ -2,45 +2,45 @@ package cn.peilion.model.pojos.organization;
 
 public class RegionCompany {
 
-  private long id;
-  private String name;
-  private String memo;
-  private String telephone;
+    private long id;
+    private String name;
+    private String memo;
+    private String telephone;
 
 
-  public long getId() {
-    return id;
-  }
+    public long getId() {
+        return id;
+    }
 
-  public void setId(long id) {
-    this.id = id;
-  }
-
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setId(long id) {
+        this.id = id;
+    }
 
 
-  public String getMemo() {
-    return memo;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setMemo(String memo) {
-    this.memo = memo;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
 
-  public String getTelephone() {
-    return telephone;
-  }
+    public String getMemo() {
+        return memo;
+    }
 
-  public void setTelephone(String telephone) {
-    this.telephone = telephone;
-  }
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 
 }

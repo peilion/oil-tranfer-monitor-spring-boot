@@ -1,7 +1,7 @@
 package cn.peilion.common.common.contants;
 
 public class WmMediaConstans {
-    public static final Short COLLECT_MATERIAL= 1; //收藏
+    public static final Short COLLECT_MATERIAL = 1; //收藏
     public static final Short CANCEL_COLLECT_MATERIAL = 0; //取消收藏
     public static final String WM_NEWS_TYPE_IMAGE = "image";
     public static final Short WM_NEWS_DRAFT_STATUS = 0; //草稿

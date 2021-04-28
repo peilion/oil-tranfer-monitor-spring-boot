@@ -13,31 +13,31 @@ import java.io.IOException;
  */
 public class ConfusionDeserializer extends JsonDeserializer<Object> {
 
-    JsonDeserializer<Object>  deserializer = null;
-    JavaType type =null;
+    JsonDeserializer<Object> deserializer = null;
+    JavaType type = null;
 
-    public  ConfusionDeserializer(JsonDeserializer<Object> deserializer, JavaType type){
+    public ConfusionDeserializer(JsonDeserializer<Object> deserializer, JavaType type) {
         this.deserializer = deserializer;
         this.type = type;
     }
 
     @Override
-    public  Object deserialize(JsonParser p, DeserializationContext ctxt)
-            throws IOException{
+    public Object deserialize(JsonParser p, DeserializationContext ctxt)
+            throws IOException {
         try {
-            if(type!=null){
-                if(type.getTypeName().contains("Long")){
+            if (type != null) {
+                if (type.getTypeName().contains("Long")) {
                     return IdsUtils.decryptLong(p.getValueAsString());
                 }
-                if(type.getTypeName().contains("Integer")){
+                if (type.getTypeName().contains("Integer")) {
                     return IdsUtils.decryptInt(p.getValueAsString());
                 }
             }
             return IdsUtils.decryptLong(p.getValueAsString());
-        }catch (Exception e){
-            if(deserializer!=null){
-                return deserializer.deserialize(p,ctxt);
-            }else {
+        } catch (Exception e) {
+            if (deserializer != null) {
+                return deserializer.deserialize(p, ctxt);
+            } else {
                 return p.getCurrentValue();
             }
         }

@@ -26,7 +26,7 @@ import java.util.TreeMap;
 
 @Log4j2
 @Order(1)
-@WebFilter(filterName = "appCheckSignFilter" ,urlPatterns = "/*")
+@WebFilter(filterName = "appCheckSignFilter", urlPatterns = "/*")
 public class AppCheckSignFilter extends GenericFilterBean {
 
     // URL有效果的验签效果
@@ -38,9 +38,9 @@ public class AppCheckSignFilter extends GenericFilterBean {
         ResponseResult<?> result = checkToken(request);
         String uri = request.getRequestURI();
 
-        log.info("=======================测试日志：{};{}",uri,result);
+        log.info("=======================测试日志：{};{}", uri, result);
         // 测试和开发环境不过滤
-        if (true || result == null || !Contants.isProd()||uri.startsWith("/login")){
+        if (true || result == null || !Contants.isProd() || uri.startsWith("/login")) {
             chain.doFilter(req, res);
         } else {
             res.setCharacterEncoding(Contants.CHARTER_NAME);

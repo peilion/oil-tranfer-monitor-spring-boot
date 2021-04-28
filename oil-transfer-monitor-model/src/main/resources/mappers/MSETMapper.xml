@@ -28,8 +28,8 @@
             </when>
             <when test="dto.nearBy">
                 where id <![CDATA[<=]]> #{dto.nearBy}
-                        order by id desc
-                        limit 10
+                order by id desc
+                limit 10
             </when>
             <when test="dto.limit != null">
                 #{dto.limit}

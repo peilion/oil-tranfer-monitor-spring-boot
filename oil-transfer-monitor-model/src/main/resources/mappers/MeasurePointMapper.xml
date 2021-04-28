@@ -34,12 +34,12 @@
         </if>
         <if test="null == dto.brief || !dto.brief">
             <include refid="Base_Column_List"/>,
-                s.name as station_name,
-                a.name as asset_name
+            s.name as station_name,
+            a.name as asset_name
         </if>
         from measure_point
-                     join station s on measure_point.station_id = s.id
-                     join asset a on measure_point.asset_id = a.id
+        join station s on measure_point.station_id = s.id
+        join asset a on measure_point.asset_id = a.id
 
 
         <where>

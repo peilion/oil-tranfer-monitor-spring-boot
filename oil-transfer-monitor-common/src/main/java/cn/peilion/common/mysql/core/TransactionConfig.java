@@ -27,7 +27,7 @@ import javax.sql.DataSource;
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @Configuration
-@ConfigurationProperties(prefix="mysql.core")
+@ConfigurationProperties(prefix = "mysql.core")
 @PropertySource("classpath:mysql-core-jdbc.properties")
 public class TransactionConfig {
 
@@ -35,11 +35,12 @@ public class TransactionConfig {
 
     /**
      * 初始化事务管理器
+     *
      * @param dataSource
      * @return
      */
     @Bean
-    public DataSourceTransactionManager mysqlCoreDataSourceTransactionManager(@Qualifier("mysqlCoreDataSource") DataSource dataSource){
+    public DataSourceTransactionManager mysqlCoreDataSourceTransactionManager(@Qualifier("mysqlCoreDataSource") DataSource dataSource) {
         DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager();
         dataSourceTransactionManager.setDataSource(dataSource);
         return dataSourceTransactionManager;
@@ -47,6 +48,7 @@ public class TransactionConfig {
 
     /**
      * 设置事务拦截器
+     *
      * @param dataSourceTransactionManager
      * @return
      */

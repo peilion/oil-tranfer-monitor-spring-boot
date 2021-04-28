@@ -7,9 +7,9 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MaintenanceSuggestion {
 
-  private long id;
-  private String faultPattern;
-  private long severity;
-  private String suggestion;
+    private long id;
+    private String faultPattern;
+    private long severity;
+    private String suggestion;
 
 }

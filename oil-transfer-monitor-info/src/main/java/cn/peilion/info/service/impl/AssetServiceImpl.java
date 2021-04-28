@@ -61,15 +61,15 @@ public class AssetServiceImpl implements AssetService {
                     if (res.get(assetGeoStat.getStationName()) == null) {
                         res.put(assetGeoStat.getStationName(), new HashMap<>());
                         HashMap<String, Object> map = res.get(assetGeoStat.getStationName());
-                        map.put("latitude",assetGeoStat.getLatitude());
-                        map.put("longitude",assetGeoStat.getLongitude());
+                        map.put("latitude", assetGeoStat.getLatitude());
+                        map.put("longitude", assetGeoStat.getLongitude());
                         map.put("statu_statistic", new ArrayList<>());
-                        List statu_statistic = (List)  map.get("statu_statistic");
-                        statu_statistic.add(new Integer[]{assetGeoStat.getStatu(),assetGeoStat.getCount()});
+                        List statu_statistic = (List) map.get("statu_statistic");
+                        statu_statistic.add(new Integer[]{assetGeoStat.getStatu(), assetGeoStat.getCount()});
                     } else {
                         HashMap<String, Object> map = res.get(assetGeoStat.getStationName());
-                        List statu_statistic = (List)  map.get("statu_statistic");
-                        statu_statistic.add(new Integer[]{assetGeoStat.getStatu(),assetGeoStat.getCount()});
+                        List statu_statistic = (List) map.get("statu_statistic");
+                        statu_statistic.add(new Integer[]{assetGeoStat.getStatu(), assetGeoStat.getCount()});
                     }
                 }
                 return ResponseResult.okResult(res);

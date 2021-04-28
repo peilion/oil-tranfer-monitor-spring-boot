@@ -7,7 +7,7 @@ import org.junit.Test;
 public class JacksonTest {
 
     @Test
-    public void testJackson(){
+    public void testJackson() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper = ConfusionModule.registerModule(objectMapper);
 

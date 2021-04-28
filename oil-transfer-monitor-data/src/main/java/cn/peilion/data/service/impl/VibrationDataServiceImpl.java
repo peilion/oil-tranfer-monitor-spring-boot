@@ -39,8 +39,8 @@ public class VibrationDataServiceImpl implements VibrationDataService {
         Detrend.process(vibData.getIma());
         Map<String, float[]> processedResult = FastFourierTransform.process(vibData.getIma(), 10000);
         TreeMap<String, Object> res = new TreeMap<>();
-        res.put("vibration_data",vibData);
-        res.put("spectrum",processedResult);
+        res.put("vibration_data", vibData);
+        res.put("spectrum", processedResult);
         return ResponseResult.okResult(res);
     }
 }

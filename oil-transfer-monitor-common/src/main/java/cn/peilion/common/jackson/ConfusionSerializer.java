@@ -13,13 +13,13 @@ import java.io.IOException;
 public class ConfusionSerializer extends JsonSerializer<Object> {
 
     @Override
-    public  void serialize(Object value, JsonGenerator jsonGenerator, SerializerProvider serializers) throws IOException {
+    public void serialize(Object value, JsonGenerator jsonGenerator, SerializerProvider serializers) throws IOException {
         try {
             if (value != null) {
                 jsonGenerator.writeString(IdsUtils.encryptNumber(Long.valueOf(value.toString())));
                 return;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         serializers.defaultSerializeValue(value, jsonGenerator);

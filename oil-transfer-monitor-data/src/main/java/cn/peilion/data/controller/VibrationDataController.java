@@ -21,6 +21,6 @@ public class VibrationDataController implements VibrationDataControllerApi {
     @ApiOperation("根据测点id获取某条或最新的振动数据")
     @GetMapping("/{measurePointId}/vib/data")
     public ResponseResult getById(DataDto dto, @PathVariable Integer measurePointId) {
-        return vibrationDataService.getById(dto,measurePointId);
+        return vibrationDataService.getById(dto, measurePointId);
     }
 }

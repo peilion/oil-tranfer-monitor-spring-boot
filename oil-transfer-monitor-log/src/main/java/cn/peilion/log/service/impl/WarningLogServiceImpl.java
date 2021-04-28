@@ -1,7 +1,6 @@
 package cn.peilion.log.service.impl;
 
 import cn.peilion.log.service.WarningLogService;
-import cn.peilion.model.common.dtos.DataDto;
 import cn.peilion.model.common.dtos.ResponseResult;
 import cn.peilion.model.common.enums.AppHttpCodeEnum;
 import cn.peilion.model.mappers.VibrationDataMapper;
@@ -9,8 +8,6 @@ import cn.peilion.model.mappers.WarningLogMapper;
 import cn.peilion.model.pojos.configuration.MaintenanceSuggestion;
 import cn.peilion.model.pojos.log.WarningLog;
 import cn.peilion.model.pojos.log.WarningLogTableItem;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,7 +66,7 @@ public class WarningLogServiceImpl implements WarningLogService {
         if (!brief) {
             List<WarningLogTableItem> warningLogList = warningLogMapper.loadList(200);
             return ResponseResult.okResult(warningLogList);
-        } else if (brief){
+        } else if (brief) {
             List<WarningLogTableItem> warningLogList = warningLogMapper.loadBriefList();
             return ResponseResult.okResult(warningLogList);
         }

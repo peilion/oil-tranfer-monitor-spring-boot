@@ -12,7 +12,7 @@ public class ComputeSpectrumTask implements Callable<ComputeSpectrumTaskResult> 
     private float[] phaseCurrent;
     private String phase;
 
-    public ComputeSpectrumTask(float[] phaseCurrent,String phase) {
+    public ComputeSpectrumTask(float[] phaseCurrent, String phase) {
         this.phaseCurrent = phaseCurrent;
         this.phase = phase;
     }
@@ -20,7 +20,7 @@ public class ComputeSpectrumTask implements Callable<ComputeSpectrumTaskResult> 
     @Override
     public ComputeSpectrumTaskResult call() throws Exception {
         Detrend.process(phaseCurrent);
-        return new ComputeSpectrumTaskResult(this.phase,FastFourierTransform.process(phaseCurrent, 10000));
+        return new ComputeSpectrumTaskResult(this.phase, FastFourierTransform.process(phaseCurrent, 10000));
     }
 
 }

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class MaintenanceRecordStat {
-  private Integer statu;
-  private Integer count;
+    private Integer statu;
+    private Integer count;
 
 }

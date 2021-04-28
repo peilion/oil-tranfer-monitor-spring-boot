@@ -37,7 +37,8 @@ import java.util.HashMap;
 public class JSONHashMapTypeHandler extends BaseTypeHandler<HashMap> {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final TypeReference<HashMap> typeRef = new TypeReference<HashMap>() {};
+    private final TypeReference<HashMap> typeRef = new TypeReference<HashMap>() {
+    };
 
 
     @SneakyThrows

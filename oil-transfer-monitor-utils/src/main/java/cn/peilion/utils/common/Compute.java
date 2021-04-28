@@ -12,6 +12,7 @@ public class Compute {
         double ss = SimilarDegree(content, title);
         System.out.println(ss);
     }
+
     /*
      * 计算相似度
      * */
@@ -86,11 +87,11 @@ public class Compute {
         char[] result = new char[matrix[m][n]];
         int currentIndex = result.length - 1;
         while (matrix[m][n] != 0) {
-            if (matrix[n] == matrix[n - 1]){
+            if (matrix[n] == matrix[n - 1]) {
                 n--;
-            } else if (matrix[m][n] == matrix[m - 1][n]){
+            } else if (matrix[m][n] == matrix[m - 1][n]) {
                 m--;
-            }else {
+            } else {
                 result[currentIndex] = chars_strA[m - 1];
                 currentIndex--;
                 n--;

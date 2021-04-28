@@ -26,13 +26,13 @@ public class ElectricFeatureController implements ElectricFeatureControllerApi {
     @ApiOperation("根据测点id获取某条或最新的电流特征")
     @GetMapping("/{measurePointId}/elec/feature")
     public ResponseResult getById(@Validated ElectricFeatureDto dto, @PathVariable Integer measurePointId) {
-        return electricFeatureService.getById(dto,measurePointId);
+        return electricFeatureService.getById(dto, measurePointId);
     }
 
     @Override
     @ApiOperation("根据测点id及时间范围获取电流特征序列")
     @GetMapping("/{measurePointId}/elec/feature/list")
     public ResponseResult getList(ElectricFeatureListDto dto, Integer measurePointId) throws NoSuchFieldException, IllegalAccessException {
-        return electricFeatureService.getList(dto,measurePointId);
+        return electricFeatureService.getList(dto, measurePointId);
     }
 }

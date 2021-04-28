@@ -27,7 +27,7 @@ import java.util.List;
 @RequestMapping("/api/v1/mp")
 public class MeasurePointController implements MeasurePointControllerApi {
 
-    private final List ruleConstraint = Arrays.asList(new String[]{"asset_id","station_id","statu"});
+    private final List ruleConstraint = Arrays.asList(new String[]{"asset_id", "station_id", "statu"});
 
     @Autowired
     private MeasurePointService measurePointService;
@@ -51,7 +51,7 @@ public class MeasurePointController implements MeasurePointControllerApi {
     @GetMapping("/stat/")
     public ResponseResult getStat(String rule) {
         if (!ruleConstraint.contains(rule)) {
-           return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID,"分组规则不存在");
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID, "分组规则不存在");
         }
         return measurePointService.loadStat(rule);
     }

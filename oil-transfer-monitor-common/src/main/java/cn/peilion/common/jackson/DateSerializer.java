@@ -13,13 +13,13 @@ import java.util.Date;
 public class DateSerializer extends JsonSerializer<Object> {
 
     @Override
-    public  void serialize(Object value, JsonGenerator jsonGenerator, SerializerProvider serializers) throws IOException {
+    public void serialize(Object value, JsonGenerator jsonGenerator, SerializerProvider serializers) throws IOException {
         try {
             if (value != null) {
-                jsonGenerator.writeNumber(((Date)value).getTime());
+                jsonGenerator.writeNumber(((Date) value).getTime());
                 return;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         serializers.defaultSerializeValue(value, jsonGenerator);

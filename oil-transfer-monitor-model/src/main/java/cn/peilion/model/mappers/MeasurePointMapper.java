@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface MeasurePointMapper {
 
-    List<MeasurePointRelated>  loadMeasurePointList(@Param("dto") MeasurePointListDto dto);
+    List<MeasurePointRelated> loadMeasurePointList(@Param("dto") MeasurePointListDto dto);
 
     MeasurePoint loadMeasurePoint(@Param("measurePointId") Integer measurePointId);
 

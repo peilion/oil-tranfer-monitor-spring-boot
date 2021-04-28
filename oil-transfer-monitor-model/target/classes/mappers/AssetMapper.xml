@@ -17,22 +17,22 @@
     </resultMap>
 
     <select id="loadAssetCards" resultMap="cardMap">
-        select asset.id                as id,
-               asset.name              as name,
-               asset.sn                as sn,
-               asset.st_time           as st_time,
-               asset.health_indicator  as health_indicator,
-               asset.statu             as statu,
-               asset.repairs           as repairs,
-               asset.mp_configuration  as mp_configuration,
-               station.name            as station_name,
-               pump_unit.is_domestic   as is_domesitc,
-               pump_unit.oil_type      as oil_type,
-               pump_unit.design_output as design_output
+        select asset.id as id,
+        asset.name as name,
+        asset.sn as sn,
+        asset.st_time as st_time,
+        asset.health_indicator as health_indicator,
+        asset.statu as statu,
+        asset.repairs as repairs,
+        asset.mp_configuration as mp_configuration,
+        station.name as station_name,
+        pump_unit.is_domestic as is_domesitc,
+        pump_unit.oil_type as oil_type,
+        pump_unit.design_output as design_output
         from asset
-                     left outer join station on asset.station_id = station.id
-                     left outer join pump_unit on asset.id = pump_unit.asset_id
-                where asset.asset_type = 0
+        left outer join station on asset.station_id = station.id
+        left outer join pump_unit on asset.id = pump_unit.asset_id
+        where asset.asset_type = 0
         <if test="id != null">
             and asset.id = #{id}
         </if>
@@ -41,31 +41,31 @@
 
     <select id="loadAssetDetail" resultType="cn.peilion.model.pojos.asset.AssetDetail">
         select asset.id,
-               asset.name,
-               asset.sn,
-               asset.lr_time,
-               asset.cr_time,
-               asset.md_time,
-               asset.st_time,
-               asset.memo,
-               asset.health_indicator,
-               asset.statu,
-               asset.asset_type,
-               asset.repairs,
+        asset.name,
+        asset.sn,
+        asset.lr_time,
+        asset.cr_time,
+        asset.md_time,
+        asset.st_time,
+        asset.memo,
+        asset.health_indicator,
+        asset.statu,
+        asset.asset_type,
+        asset.repairs,
 
-               s.name  as station_name,
-               p.name  as pipeline_name,
-               bc.name as branch_name,
-               rc.name as region_name,
-               pu.is_domestic,
-               pu.oil_type,
-               pu.design_output
+        s.name as station_name,
+        p.name as pipeline_name,
+        bc.name as branch_name,
+        rc.name as region_name,
+        pu.is_domestic,
+        pu.oil_type,
+        pu.design_output
         from asset
-                     join station s on asset.station_id = s.id
-                     join pump_unit pu on asset.id = pu.asset_id
-                     join pipeline p on pu.pipeline_id = p.id
-                     join branch_company bc on s.bc_id = bc.id
-                     join region_company rc on s.rc_id = rc.id
+        join station s on asset.station_id = s.id
+        join pump_unit pu on asset.id = pu.asset_id
+        join pipeline p on pu.pipeline_id = p.id
+        join branch_company bc on s.bc_id = bc.id
+        join region_company rc on s.rc_id = rc.id
         where asset.id = #{id}
     </select>
 
@@ -90,13 +90,13 @@
     </select>
 
     <select id="loadGeoAssetStat" resultType="cn.peilion.model.pojos.asset.AssetGeoStat">
-        SELECT station.NAME      as station_name,
-               statu             as statu,
-               COUNT(*)          as count,
-               station.longitude as longitude,
-               station.latitude  as latitude
+        SELECT station.NAME as station_name,
+        statu as statu,
+        COUNT(*) as count,
+        station.longitude as longitude,
+        station.latitude as latitude
         FROM asset
-                     JOIN station ON asset.station_id = station.id
+        JOIN station ON asset.station_id = station.id
         WHERE asset.asset_level = 0
         GROUP BY asset.statu, station_id
         ORDER BY asset.statu

@@ -21,6 +21,7 @@ public class StorageEntity {
 
     /**
      * 添加一个存储数据
+     *
      * @param storageData
      */
     public void addStorageData(StorageData storageData) {

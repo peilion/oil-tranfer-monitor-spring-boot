@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class SingleFiledStatisticResult {
 
-  private Integer filed;
-  private Integer cnt;
+    private Integer filed;
+    private Integer cnt;
 
 }

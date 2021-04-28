@@ -13,10 +13,10 @@ public class InitProfileInfoAware implements ApplicationContextAware {
     Logger logger = LoggerFactory.getLogger(InitProfileInfoAware.class);
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException{
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         // 在WEB环境才执行
-        String temp[] =applicationContext.getEnvironment().getActiveProfiles();
-        if(temp!=null&&temp.length>0) {
+        String temp[] = applicationContext.getEnvironment().getActiveProfiles();
+        if (temp != null && temp.length > 0) {
             Contants.PROFILE_NAME = temp[0];
             logger.info("当前的配置环境是：{}", Contants.PROFILE_NAME);
         }
