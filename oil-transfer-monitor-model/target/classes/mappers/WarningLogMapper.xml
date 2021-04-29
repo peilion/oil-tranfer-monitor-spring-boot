@@ -40,6 +40,11 @@
         <result column="asset_id" property="assetId"/>
         <result column="mp_id" property="mpId"/>
     </resultMap>
+    <resultMap id="eventMap" type="cn.peilion.model.pojos.log.AssetEvent">
+        <result column="cr_time" property="crTime"/>
+        <result column="description" property="description" typeHandler="cn.peilion.model.typeHandler.JSONHashMapTypeHandler"/>
+        <result column="event_type" property="eventType"/>
+    </resultMap>
 
     <select id="loadStatisticByPeriod" resultType="java.lang.Integer">
         SELECT sum(cnt) AS cnt
@@ -150,7 +155,7 @@
         LIMIT 10
     </select>
 
-    <select id="loadRecentAssetEvent" resultType="cn.peilion.model.pojos.log.AssetEvent">
+    <select id="loadRecentAssetEvent" resultMap="eventMap">
         SELECT cr_time,
         description,
         'mainte' as event_type

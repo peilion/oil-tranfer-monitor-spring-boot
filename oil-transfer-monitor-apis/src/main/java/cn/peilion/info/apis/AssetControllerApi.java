@@ -1,6 +1,7 @@
 package cn.peilion.info.apis;
 
 import cn.peilion.model.common.dtos.ResponseResult;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * @author fpl11
@@ -15,5 +16,5 @@ public interface AssetControllerApi {
 
     ResponseResult getStatistic(String rule);
 
-
+    ResponseResult getCardWithLog(Integer id) throws JsonProcessingException;
 }

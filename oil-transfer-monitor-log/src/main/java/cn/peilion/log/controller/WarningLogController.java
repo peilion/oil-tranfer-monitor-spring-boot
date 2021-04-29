@@ -52,9 +52,9 @@ public class WarningLogController implements WarningLogControllerApi {
 
 
     @Override
-    @GetMapping("/asset/{id}/")
+    @GetMapping(value = "/asset/{id}/", produces = "application/json")
     @ApiOperation("设备近期事件")
-    public ResponseResult getAssetRecentEvent(Integer assetId) {
+    public ResponseResult getAssetRecentEvent(@PathVariable("id") Integer assetId) {
         return warningLogService.listAssetEvent(assetId);
     }
 }
